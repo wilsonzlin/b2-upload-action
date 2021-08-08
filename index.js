@@ -68,10 +68,10 @@ const fetchOkJson = (url, { body, ...opts }) =>
   });
 
 (async () => {
-  const auth = `Basic ${[
-    Buffer.from(core.getInput("keyId")).toString("base64"),
-    Buffer.from(core.getInput("applicationKey")).toString("base64"),
-  ].join(":")}`;
+  const auth = `Basic ${Buffer.from([
+    core.getInput("keyId"),
+    core.getInput("applicationKey"),
+  ].join(":")).toString("base64")}`;
   const contentType = core.getInput("contentType");
   const bucket = core.getInput("bucket");
   const filePath = core.getInput("file");
