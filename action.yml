@@ -1,0 +1,48 @@
+name: "B2 Upload"
+description: "Upload a file to Backblaze B2"
+inputs:
+  bucket:
+    description: "Name of bucket"
+    required: true
+  uploadKey:
+    description: "Upload destination key"
+    required: true
+  keyId:
+    description: "Key ID"
+    required: true
+  applicationKey:
+    description: "Application key"
+    required: true
+  file:
+    description: "Path to file"
+    required: true
+  contentType:
+    description: "Content-Type of file"
+    required: true
+    default: "b2/x-auto"
+outputs:
+  bucketId:
+    description: "Bucket ID"
+  contentLength:
+    description: "Bytes in uploaded file"
+  contentSha1:
+    description: 'SHA1 of uploaded file as a 40-digit hex string, or "none" for large files'
+  contentMd5:
+    description: "MD5 of uploaded file as a 32-digit hex string, or null"
+  contentType:
+    description: "MIME type of uploaded file"
+  fileId:
+    description: "ID of uploaded file"
+  fileInfo:
+    description: "Custom information associated with the file, as a JSON object"
+  fileName:
+    description: "Name of uploaded file"
+  fileRetention:
+    description: "Any File Lock retention settings for uploaded file"
+  legalHold:
+    description: "Any File Lock legal hold status for uploaded file"
+  serverSideEncryption:
+    description: "The mode and algorithm used to encrypt the data with Server-Side Encryption, if uploaded file was encrypted"
+runs:
+  using: "node12"
+  main: "index.js"

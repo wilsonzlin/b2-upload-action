@@ -1,0 +1,26 @@
+{
+  "name": "b2-upload-action",
+  "version": "0.0.1",
+  "description": "Upload a file to B2 from GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier -w *.{js,json,yml}"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wilsonzlin/b2-upload-action.git"
+  },
+  "author": {
+    "name": "Wilson Lin",
+    "email": "code@wilsonl.in"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wilsonzlin/b2-upload-action/issues"
+  },
+  "homepage": "https://github.com/wilsonzlin/b2-upload-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0"
+  }
+}
