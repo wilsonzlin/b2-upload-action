@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Upload a file to B2 from GitHub Actions",
   "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "format": "prettier -w *.{js,json,yml}"
   },

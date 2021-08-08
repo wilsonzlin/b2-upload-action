@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 const crypto = require("crypto");
-const fs = require("fs/promises");
+const fs = require("fs").promises;
 const https = require("https");
 
 const textEncoder = new TextEncoder();
