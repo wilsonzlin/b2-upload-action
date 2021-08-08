@@ -1,0 +1,28 @@
+on: [push]
+
+jobs:
+  test_upload:
+    runs-on: ubuntu-latest
+    name: Upload a test file
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Create test file
+        run: echo 'Hello, world!' > test.txt
+
+      - name: Upload file
+        uses: ./
+        id: upload
+        with:
+          bucket: ${{ secrets.TEST_BUCKET_NAME }}
+          uploadKey: ${{ secrets.TEST_UPLOAD_KEY }}
+          keyId: ${{ secrets.TEST_KEY_ID }}
+          applicationKey: ${{ secrets.TEST_APPLICATION_KEY }}
+          file: test.txt
+          contentType: text/plain; charset=UTF-8
+
+      - name: Get output
+        env:
+          GHOUT: ${{ toJson(steps.upload.outputs) }}
+        run: echo "$GHOUT"
