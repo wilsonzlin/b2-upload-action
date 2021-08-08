@@ -1,5 +1,8 @@
 name: "B2 Upload"
 description: "Upload a file to Backblaze B2"
+branding:
+  icon: upload-cloud
+  color: red
 inputs:
   bucket:
     description: "Name of bucket"
