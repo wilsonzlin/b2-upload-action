@@ -49,7 +49,7 @@ const fetchOkJson = (url, { body, ...opts }) =>
       if (res.statusCode < 200 || res.statusCode > 299) {
         return reject(
           new Error(
-            `Request to ${url} failed with status ${res.status}`
+            `Request to ${url} failed with status ${res.statusCode}`
           )
         );
       }
