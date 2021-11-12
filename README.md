@@ -4,6 +4,8 @@ This action uploads a file from the file system to Backblaze B2.
 
 This is a JavaScript action, so no dependencies are required, and it works on all architectures.
 
+Failed requests automatically retry with exponential backoff, with up to 3 attempts for each request.
+
 ## Usage
 
 ```yaml
