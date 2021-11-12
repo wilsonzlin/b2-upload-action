@@ -67,6 +67,19 @@ const fetchOkJson = (url, { body, ...opts }) =>
     req.end(body);
   });
 
+const retryable = async (fn, maxAttempts = 3) => {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt === maxAttempts) {
+        throw err;
+      }
+      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+    }
+  }
+};
+
 (async () => {
   const auth = `Basic ${Buffer.from([
     core.getInput("keyId"),
@@ -80,18 +93,18 @@ const fetchOkJson = (url, { body, ...opts }) =>
   const body = await fs.readFile(filePath);
   const sha1 = crypto.createHash("sha1").update(body).digest("hex");
 
-  const { accountId, apiUrl, authorizationToken } = await fetchOkJson(
+  const { accountId, apiUrl, authorizationToken } = await retryable(() => fetchOkJson(
     "https://api.backblazeb2.com/b2api/v2/b2_authorize_account",
     {
       headers: {
         Authorization: auth,
       },
     }
-  );
+  ));
 
   const {
     buckets: [{ bucketId }],
-  } = await fetchOkJson(`${apiUrl}/b2api/v2/b2_list_buckets`, {
+  } = await retryable(() => fetchOkJson(`${apiUrl}/b2api/v2/b2_list_buckets`, {
     method: "POST",
     headers: {
       Authorization: authorizationToken,
@@ -101,10 +114,10 @@ const fetchOkJson = (url, { body, ...opts }) =>
       accountId,
       bucketName: bucket,
     }),
-  });
+  }));
 
   const { authorizationToken: uploadAuthorizationToken, uploadUrl } =
-    await fetchOkJson(`${apiUrl}/b2api/v2/b2_get_upload_url`, {
+    await retryable(() => fetchOkJson(`${apiUrl}/b2api/v2/b2_get_upload_url`, {
       method: "POST",
       headers: {
         Authorization: authorizationToken,
@@ -113,9 +126,9 @@ const fetchOkJson = (url, { body, ...opts }) =>
       body: JSON.stringify({
         bucketId,
       }),
-    });
+    }));
 
-  const uploadResult = await fetchOkJson(uploadUrl, {
+  const uploadResult = await retryable(() => fetchOkJson(uploadUrl, {
     method: "POST",
     body,
     headers: {
@@ -124,7 +137,7 @@ const fetchOkJson = (url, { body, ...opts }) =>
       "X-Bz-Content-Sha1": sha1,
       "X-Bz-File-Name": encodeB2PathComponent(key),
     },
-  });
+  }));
 
   for (const prop of [
     "bucketId",
